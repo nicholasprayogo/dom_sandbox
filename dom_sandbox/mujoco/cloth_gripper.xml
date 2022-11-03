@@ -1,0 +1,122 @@
+<mujoco>
+  <include file="./common/visual.xml"/>
+  <include file="./common/skybox.xml"/>
+  <include file="./common/materials.xml"/>
+  <default>
+      <geom friction=".7" solimp="0.9 0.97 0.001" solref=".005 1"/>
+      <joint solimplimit="0 0.99 0.01" solreflimit=".005 1"/>
+      <general ctrllimited="true"/>
+      <tendon width="0.01"/>
+      <site size=".003 .003 .003" material="site" group="3"/>
+
+      <default class="arm">
+        <geom type="capsule" material="self" density="500"/>
+        <joint type="hinge" pos="0 0 0" axis="0 -1 0" limited="true"/>
+        <default class="hand">
+          <joint damping=".5" range="-10 60"/>
+          <geom size=".008"/>
+          <site  type="box" size=".018 .005 .005" pos=".022 0 -.002" euler="0 15 0" group="4"/>
+          <default class="fingertip">
+            <geom type="sphere" size=".008" material="effector"/>
+            <joint damping=".01" stiffness=".01" range="-40 20"/>
+            <site  size=".012 .005 .008" pos=".003 0 .003" group="4" euler="0 0 0"/>
+          </default>
+        </default>
+      </default>
+
+      <default class="object">
+        <geom material="self"/>
+      </default>
+
+      <default class="task">
+        <site rgba="0 0 0 0"/>
+      </default>
+
+      <default class="obstacle">
+        <geom material="decoration" friction="0"/>
+      </default>
+
+      <default class="ghost">
+        <geom material="target" contype="0" conaffinity="0"/>
+      </default>
+    </default>
+
+   <worldbody>
+
+      <light diffuse=".5 .5 .5" pos="0 0 3" dir="0 0 -1"/>
+      <geom type="plane" size="1 1 0.1" rgba=".9 0 0 1"/>
+      <body name="B3_5" pos="0 0 1">
+        <freejoint/>
+        <composite type="cloth" count="9 9 1" spacing="0.05" flatinertia="0.01">
+          <joint kind="main" damping="0.001"/>
+          <!-- <skin material="matcarpet" texcoord="true" inflate="0.005" subgrid="2"/> -->
+          <geom type="capsule" size="0.015 0.01" rgba=".8 .2 .1 1"/>
+        </composite>
+      </body>
+      
+<!-- from manipulator.xml -->
+      <geom name="arm_root" type="cylinder" fromto="0 -.022 .4 0 .022 .4" size=".024"
+          material="decoration" contype="0" conaffinity="0"/>
+      <body name="upper_arm" pos="0 0 .4" childclass="arm">
+        <joint name="arm_root" damping="2" limited="false"/>
+        <geom  name="upper_arm"  size=".02" fromto="0 0 0 0 0 .18"/>
+        <body  name="middle_arm" pos="0 0 .18" childclass="arm">
+          <joint name="arm_shoulder" damping="1.5" range="-160 160"/>
+          <geom  name="middle_arm"  size=".017" fromto="0 0 0 0 0 .15"/>
+          <body  name="lower_arm" pos="0 0 .15">
+            <joint name="arm_elbow" damping="1" range="-160 160"/>
+            <geom  name="lower_arm" size=".014" fromto="0 0 0 0 0 .12"/>
+            <body  name="hand" pos="0 0 .12">
+              <joint name="arm_wrist" damping=".5" range="-140 140" />
+              <geom  name="hand" size=".011" fromto="0 0 0 0 0 .03"/>
+              <geom  name="palm1"  fromto="0 0 .03  .03 0 .045" class="hand"/>
+              <geom  name="palm2"  fromto="0 0 .03 -.03 0 .045" class="hand"/>
+              <site  name="grasp" pos="0 0 .065"/>
+              <body  name="pinch site" pos="0 0 .090">
+                <site  name="pinch"/>
+                <inertial pos="0 0 0" mass="1e-6" diaginertia="1e-12 1e-12 1e-12"/>
+                <camera name="hand" pos="0 -.3 0" xyaxes="1 0 0 0 0 1" mode="track"/>
+              </body>
+              <site  name="palm_touch" type="box" group="4" size=".025 .005 .008" pos="0 0 .043"/>
+
+              <body name="thumb" pos=".03 0 .045" euler="0 -90 0" childclass="hand">
+                <joint name="thumb"/>
+                <geom  name="thumb1"  fromto="0 0 0 .02 0 -.01" size=".007"/>
+                <geom  name="thumb2"  fromto=".02 0 -.01 .04 0 -.01" size=".007"/>
+                <site  name="thumb_touch" group="4"/>
+                <body  name="thumbtip" pos=".05 0 -.01" childclass="fingertip">
+                  <joint name="thumbtip"/>
+                  <geom  name="thumbtip1" pos="-.003 0 0" />
+                  <geom  name="thumbtip2" pos=".003 0 0" />
+                  <site  name="thumbtip_touch" group="4"/>
+                </body>
+              </body>
+
+              <body name="finger" pos="-.03 0 .045" euler="0 90 180" childclass="hand">
+                <joint name="finger"/>
+                <geom  name="finger1"  fromto="0 0 0 .02 0 -.01" size=".007" />
+                <geom  name="finger2"  fromto=".02 0 -.01 .04 0 -.01" size=".007"/>
+                <site  name="finger_touch"/>
+                <body  name="fingertip" pos=".05 0 -.01" childclass="fingertip">
+                  <joint name="fingertip"/>
+                  <geom  name="fingertip1" pos="-.003 0 0" />
+                  <geom  name="fingertip2" pos=".003 0 0" />
+                  <site  name="fingertip_touch"/>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+   </worldbody>
+
+   <actuator>
+      <motor name="root"     joint="arm_root"     ctrlrange="-1 1"  gear="12"/>
+      <motor name="shoulder" joint="arm_shoulder" ctrlrange="-1 1"  gear="8"/>
+      <motor name="elbow"    joint="arm_elbow"    ctrlrange="-1 1"  gear="4"/>
+      <motor name="wrist"    joint="arm_wrist"    ctrlrange="-1 1"  gear="2"/>
+  <!--    <motor name="grasp"    tendon="grasp"       ctrlrange="-1 1"  gear="2"/>-->
+  <!--    <position name="finger" joint="fingertip" ctrllimited="true" ctrlrange="0 0.2" kp="300"/>-->
+  <!--    <position name="thumb" joint="thumbtip" ctrllimited="true" ctrlrange="0 0.2" kp="300"/>-->
+    </actuator>
+</mujoco>

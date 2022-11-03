@@ -1,0 +1,21 @@
+<mujoco model="cloth_z_up">
+  <default>
+    <default class="visual">
+      <geom group="2" type="mesh" contype="0" conaffinity="0"/>
+    </default>
+    <default class="collision">
+      <geom group="3" type="mesh"/>
+    </default>
+  </default>
+  <asset>
+    <texture type="2d" name="cube" file="cube.png"/>
+    <material name="None" texture="cube" specular="0.5" shininess="0.094117647"/>
+    <mesh file="cloth_z_up.obj"/>
+  </asset>
+  <worldbody>
+    <body name="cloth_z_up">
+      <geom material="None" mesh="cloth_z_up" class="visual"/>
+      <geom mesh="cloth_z_up" class="collision"/>
+    </body>
+  </worldbody>
+</mujoco>

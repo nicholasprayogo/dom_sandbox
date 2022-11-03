@@ -1,0 +1,23 @@
+<mujoco model='sawyer'>
+    <compiler angle="radian" meshdir="" inertiagrouprange="0 0"/>
+    <option impratio="20" cone="elliptic" density="1.2" viscosity="0.00002"/>
+    <size nconmax="5000" njmax="5000"/>
+
+    <!-- sawyer assets-->
+    <include file="assets/sawyer_assets.xml"/>
+    
+    <!-- arenta -->
+    <include file="../../asset/common_arena/pegs_arena.xml"/>
+    >
+    <!-- objects -->
+    <include file="assets/sawyer_objects.xml"/>
+
+    <!-- sawyer mujoco xml-->
+    <include file="assets/sawyer_body.xml"/>
+
+    <!-- sawyer arm actuator-->
+    <include file="assets/sawyer_arm_motor_actuator.xml"/>
+
+    <!-- sawyer gripper actuator-->
+    <include file="assets/sawyer_gripper_position_actuator.xml"/>
+</mujoco>

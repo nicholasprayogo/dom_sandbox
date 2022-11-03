@@ -1,0 +1,7 @@
+ffmpeg
+mujoco
+dm_control
+pillow
+matplotlib
+opengl
+glfw3

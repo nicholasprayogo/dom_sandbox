@@ -1,0 +1,44 @@
+<mujocoinclude>    
+    <asset>
+    	<mesh name="sawyer_base_vis" file="meshes/base.stl" />
+    	<mesh name="sawyer_l0_vis"	file="meshes/l0.stl" />
+    	<mesh name="sawyer_head_vis" file="meshes/head.stl" />
+    	<mesh name="sawyer_l1_vis"	file="meshes/l1.stl" />
+    	<mesh name="sawyer_l2_vis"	file="meshes/l2.stl" />
+    	<mesh name="sawyer_l3_vis"	file="meshes/l3.stl" />
+    	<mesh name="sawyer_l4_vis"	file="meshes/l4.stl" />
+    	<mesh name="sawyer_l5_vis"	file="meshes/l5.stl" />
+    	<mesh name="sawyer_l6_vis"	file="meshes/l6.stl" />
+
+		<mesh name="sawyer_base_col" file="meshes/base.stl" />
+    	<mesh name="sawyer_l0_col"	file="meshes/l0.stl" />
+    	<mesh name="sawyer_head_col" file="meshes/head.stl" />
+    	<mesh name="sawyer_l1_col"	file="meshes/l1.stl" />
+    	<mesh name="sawyer_l2_col"	file="meshes/l2.stl" />
+    	<mesh name="sawyer_l3_col"	file="meshes/l3.stl" />
+    	<mesh name="sawyer_l4_col"	file="meshes/l4.stl" />
+    	<mesh name="sawyer_l5_col"	file="meshes/l5.stl" />
+    	<mesh name="sawyer_l6_col"	file="meshes/l6.stl" />
+    </asset>
+
+	<asset>
+		<mesh name="sawyer_pedestal" file="meshes/rethink_mount/pedestal.stl" />
+	</asset>
+
+    <contact>
+        <exclude body1="sawyer_right_arm_base_link" body2="sawyer_right_l0"/>
+    </contact>
+
+    <asset>
+        <mesh name="electric_gripper_base" file="meshes/rethink_gripper/electric_gripper_base.stl" />
+        <mesh name="standard_narrow" file="meshes/rethink_gripper/standard_narrow.stl" />
+        <mesh name="half_round_tip" file="meshes/rethink_gripper/half_round_tip.stl" />
+        <mesh name="connector_plate" file="meshes/rethink_gripper/connector_plate.stl" />
+    </asset>
+
+	<sensor>
+        <force name="force_ee" site="ft_frame"/>
+        <torque name="torque_ee" site="ft_frame"/>
+    </sensor>
+	
+</mujocoinclude>
