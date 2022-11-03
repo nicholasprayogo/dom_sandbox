@@ -1,0 +1,16 @@
+
+[tool.poetry]
+name = "dom-sandbox"
+description = "Sandbox for deformable object manipulation"
+version = "0.0.0"
+authors = ["Your Name <you@example.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.10.1"
+pybullet = "^3.2.5"
+mujoco = "^2.3.0"
+
+[build-system]
+requires = ["poetry-core @ git+https://github.com/python-poetry/poetry-core.git@master"]
+build-backend = "poetry.core.masonry.api"
