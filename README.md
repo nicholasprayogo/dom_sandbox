@@ -22,4 +22,20 @@ You might also need to install glfw for OpenGL-based rendering (particularly for
 sudo apt-get install libglfw3
 ```
 
+## Running the code
+
+1. Mujoco
+
+```
+cd mujoco
+python3 native_mujoco.py
+```
+
+2. PyBullet
+
+```
+cd pybullet
+python3 dom_bullet.py
+```
+
 ## Notes
