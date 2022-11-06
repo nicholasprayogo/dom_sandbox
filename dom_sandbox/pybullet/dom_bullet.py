@@ -1,8 +1,10 @@
+# Mostly based on pybullet example https://github.com/bulletphysics/bullet3/blob/master/examples/pybullet/examples/deformable_anchor.py 
+
 import pybullet as p
 from time import sleep
+import pybullet_data
 
 physicsClient = p.connect(p.GUI)
-import pybullet_data
 
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 p.resetSimulation(p.RESET_USE_DEFORMABLE_WORLD)
@@ -13,8 +15,13 @@ p.setGravity(0, 0, gravZ)
 planeOrn = [0,0,0,1]#p.getQuaternionFromEuler([0.3,0,0])
 #planeId = p.loadURDF("plane.urdf", [0,0,-2],planeOrn)
 
-boxId = p.loadURDF("franka_panda/panda.urdf", [0,0,0])
 # clothId = p.loadURDF("bullet_official/cloth_z_up.urdf", [0,0,2], flags=p.URDF_USE_SELF_COLLISION)
+boxId = p.loadURDF("franka_panda/panda.urdf", [0,0,0])
+clothId = p.loadSoftBody("bullet_official/cloth_z_up.obj", basePosition = [0,0,2], scale = 0.5, mass = 1., useNeoHookean = 0, useBendingSprings=1,useMassSpring=1, springElasticStiffness=40, springDampingStiffness=.1, springDampingAllDirections = 1, useSelfCollision = 0, frictionCoeff = .5, useFaceContact=1)
+# clothId = p.loadSoftBody("cloth_z_up.obj", basePosition = [0,0,2], scale = 0.5, mass = 1., useNeoHookean = 0, useBendingSprings=1,useMassSpring=1, springElasticStiffness=40, springDampingStiffness=.1, springDampingAllDirections = 1, useSelfCollision = 0, frictionCoeff = .5, useFaceContact=1)
+
+print(f"Box ID: {boxId}")
+print(f"Cloth ID: {boxId}")
 
 # obj syntax
 # # - comments, which are ignored
@@ -25,17 +32,19 @@ boxId = p.loadURDF("franka_panda/panda.urdf", [0,0,0])
 # s - turn smooth shading off or on; flat shading is used when smooth shading is off.
 # f - defines the vertices that compose a face. Note that faces can have more than 3 vertices. In this example the faces have four vertices which define quad polygons. These must be divided into triangles before WebGL rendering.
 
-clothId = p.loadSoftBody("bullet_official/cloth_z_up.obj", basePosition = [0,0,2], scale = 0.5, mass = 1., useNeoHookean = 0, useBendingSprings=1,useMassSpring=1, springElasticStiffness=40, springDampingStiffness=.1, springDampingAllDirections = 1, useSelfCollision = 0, frictionCoeff = .5, useFaceContact=1)
-# clothId = p.loadSoftBody("cloth_z_up.obj", basePosition = [0,0,2], scale = 0.5, mass = 1., useNeoHookean = 0, useBendingSprings=1,useMassSpring=1, springElasticStiffness=40, springDampingStiffness=.1, springDampingAllDirections = 1, useSelfCollision = 0, frictionCoeff = .5, useFaceContact=1)
-
 # p.changeVisualShape(clothId, -1, flags=p.VISUAL_SHAPE_DOUBLE_SIDED)
 
 # anchors cloth to ground
+# arguments:  int softBodyUniqueId, int nodeIndex, int bodyUniqueId, int linkIndex, const double bodyFramePosition[3]
+# can also anchor to box
+# p.createSoftBodyAnchor(clothId ,15,boxId,-1)
+p.createSoftBodyAnchor(clothId ,19,boxId,-1, [-0.5,-0.5,0])
+p.setPhysicsEngineParameter(sparseSdfVoxelSize=0.25)
+
 p.createSoftBodyAnchor(clothId  ,24,-1,-1)
 p.createSoftBodyAnchor(clothId ,20,-1,-1)
-info = p.getJointInfo(boxId, 12)
-
-print(info)
+# info = p.getJointInfo(boxId, 12)
+# print(info)
 
 # boxid needs to be parent
 # joint type fixed works, gear doesn't
@@ -45,14 +54,6 @@ print(info)
 #        parentFramePosition=[0, 0, 0],
 #        childFramePosition=[0, 0, 0]
 #        )
-
-print(f"Box ID: {boxId}")
-
-# can also anchor to box
-# arguments:  int softBodyUniqueId, int nodeIndex, int bodyUniqueId, int linkIndex, const double bodyFramePosition[3]
-# p.createSoftBodyAnchor(clothId ,15,boxId,-1)
-p.createSoftBodyAnchor(clothId ,19,boxId,-1, [-0.5,-0.5,0])
-p.setPhysicsEngineParameter(sparseSdfVoxelSize=0.25)
 
 debug = True
 
@@ -81,7 +82,6 @@ while p.isConnected():
   p.stepSimulation()
   #p.configureDebugVisualizer(p.COV_ENABLE_SINGLE_STEP_RENDERING,1)
   #sleep(1./240.)
-
 
 # source: https://github.com/bulletphysics/bullet3/blob/master/examples/pybullet/examples/deformable_torus.py
 #
