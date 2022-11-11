@@ -1,6 +1,12 @@
 # Deformable Object Manipulation Sandbox
 
-Our goal is to study and compare how deformable object manipulation is simulated in 2 popular physics engines, Bullet and Mujoco. Mainly, we would like to understand how the contact physics work and perhaps differ between the 2.
+Our goal is to study and compare how deformable object manipulation is simulated in 2 popular physics engines, Bullet and Mujoco. Mainly, we would like to understand the contact physics and evaluate any differences, which would be crucial for controlling manipulators, espeically in real-world settings, where there might be a lot of unknowns regarding the contact forces. 
+
+We hope that this sandbox can help users:
+* Have a baseline understanding on how the coding (i.e. PyBullet vs native Mujoco python bindings) and model file definitions (i.e. MJCF vs URDF) would differ between these frameworks. 
+* Understand about how physics and control differ between these engines in the context of deformable object manipulation.
+* Pick a more suitable simulator for their use case, based on the results presented.
+* Run experiments comparing the 2 simulators
 
 ## Installation
 
