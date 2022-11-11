@@ -55,7 +55,7 @@ Run the following commands.
 
 ```
 cd pybullet
-python3 bullet_sandbox.py
+python3 bullet_main.py --manipulator_xml_path <manipulator_xml_path> --cloth_xml_path <cloth_xml_path>
 ```
 
 This loads the `panda.urdf` via `loadURDF` and `cloth_z_up.obj` with `loadSoftBody`. 
@@ -70,21 +70,23 @@ Expected output (TODO use gif/video):
 
 ### General 
 * Mujoco bodies need to all be compiled within XML, can't be dynamically loaded, unlike in PyBullet. 
+* Refer to Notion page for further notes
 
 ### Mujoco 
 * The Python bindings are almost the same as the C bindings in which the documentation can be found [here](https://mujoco.readthedocs.io/en/latest/APIreference.html).
 
 * [Soft contacts and physical realism](https://mujoco.readthedocs.io/en/latest/computation.html#physical-realism-and-soft-contacts)
 
-Working manipulators (relative to `mujoco` folder)
-* `data/franka_emika_panda/panda.xml`from [mujoco_menagerie](https://github.com/deepmind/mujoco_menagerie/tree/main/franka_emika_panda)
-* `data/mjcf_ur5e/ur5e.xml`from [mujoco_menagerie](https://github.com/deepmind/mujoco_menagerie/tree/main/franka_emika_panda)
+* Working manipulators (relative to `mujoco` folder)
+    * `data/franka_emika_panda/panda.xml`from [mujoco_menagerie](https://github.com/deepmind/mujoco_menagerie/tree/main/franka_emika_panda)
+    * `data/mjcf_ur5e/ur5e.xml`from [mujoco_menagerie](https://github.com/deepmind/mujoco_menagerie/tree/main/franka_emika_panda)
 
-Soft bodies + Manipulator
-* `data/cloth_gripper.xml`
-* `data/cloth.xml`
-* `data/cloth_panda/cloth_panda.xml`
+* Soft bodies + Manipulator
+    * `data/cloth_gripper.xml`
+    * `data/cloth.xml`
+    * `data/cloth_panda/cloth_panda.xml`
 
+* Using `mujoco-python-viewer` for rendering for now since it wraps `glfw` functions well and provides an interactive render. Will study the base code further to see if we can remove this dependency. 
 
 ### PyBullet
 
