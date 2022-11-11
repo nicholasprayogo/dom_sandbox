@@ -31,7 +31,7 @@ sudo apt-get install libglfw3
 Run the following commands (args are optional with default values set):
 ```
 cd mujoco
-python3 mujoco_with_viewer.py --control_mode <control_mode> --xml_path <xml_path>
+python3 mujoco_main.py --control_mode <control_mode> --xml_path <xml_path>
 ```
 
 By default, this loads the `cloth_panda.xml` model file, which contains a Panda manipulator and a cloth, into a scene rendered with OpenGL.
