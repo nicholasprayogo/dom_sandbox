@@ -43,6 +43,7 @@ python3 mujoco_main.py --control_mode <control_mode> --xml_path <xml_path>
 By default, this loads the `cloth_panda.xml` model file, which contains a Panda manipulator and a cloth, into a scene rendered with OpenGL.
 
 Expected output (TODO use gif/video):
+
 <img src="./doc_assets/mj_cloth_panda.png " alt="drawing" width="800"/>
 
 <!-- For using Panda
@@ -69,7 +70,8 @@ This loads the `panda.urdf` via `loadURDF` and `cloth_z_up.obj` with `loadSoftBo
 The code is mostly derived from the [deformable anchor](https://github.com/bulletphysics/bullet3/blob/master/examples/pybullet/examples/deformable_anchor.py) pybullet example. 
 
 Expected output (TODO use gif/video):
-<img src="./doc_assets/bullet_start.png " alt="drawing" width="800"/>
+
+<img src="./doc_assets/bullet_start.png " alt="drawing" width="400"/>
 
 An issue: At render, the cloth is only visible from below (thus placed above the manipulator for now).  
 
