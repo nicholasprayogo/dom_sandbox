@@ -71,6 +71,8 @@ The code is mostly derived from the [deformable anchor](https://github.com/bulle
 Expected output (TODO use gif/video):
 <img src="./doc_assets/bullet_start.png " alt="drawing" width="800"/>
 
+An issue: At render, the cloth is only visible from below (thus placed above the manipulator for now).  
+
 <!-- <img src="./doc_assets/bullet_end.png " alt="drawing" width="800"/> -->
 ## Notes
 
