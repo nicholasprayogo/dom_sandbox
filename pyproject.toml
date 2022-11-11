@@ -7,7 +7,7 @@ authors = ["Your Name <you@example.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.10.1"
+python = "^3.9.6"
 pybullet = "^3.2.5"
 mujoco = "^2.3.0"
 

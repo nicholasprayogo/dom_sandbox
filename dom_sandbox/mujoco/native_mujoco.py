@@ -6,10 +6,11 @@ import argparse
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--xml_path', type=str, required=False, default = "cloth_gripper.xml")
-    parser.add_argument('--control_mode', type=str, required=False, default="freefall")
+    parser.add_argument('--control_mode', type=str, required=False, default= "freefall")
+    
     args = parser.parse_args()
     
-    control_mode = args.freefall
+    control_mode = args.control_mode
     xml_path = args.xml_path
 
     # The mujoco.GLContext class only provides basic offscreen rendering capability
@@ -38,7 +39,7 @@ if __name__ == "__main__":
     # init GLFW, create window, make OpenGL context current, request v-sync
     mj.glfw.glfw.init()
 
-    height, width = int( 1200/2), int(900/2)
+    height, width = int(1200/2), int(900/2)
 
     window = mj.glfw.glfw.create_window(height, width, "Demo", None, None)
     mj.glfw.glfw.make_context_current(window)
@@ -54,7 +55,7 @@ if __name__ == "__main__":
     # print(dir(data))
 
     # print(data.ctrl)
-    # outputs 4 since have 4 actuators, must use index (cant use name itself?)
+    # outputs 4 since have 4 actuators, must use index (or obtain index from naming primitve below)
 
     # print(data.xfrc_applied.shape)
     # (91, 6) for  cloth_gripper
@@ -67,6 +68,17 @@ if __name__ == "__main__":
 
     scene = mj.MjvScene(model, maxgeom=10000)
     context = mj.MjrContext(model, mj.mjtFontScale.mjFONTSCALE_150.value)
+    
+#     typedef enum _mjtFontScale
+# {
+#     mjFONTSCALE_50      = 50,       // 50% scale, suitable for low-res rendering
+#     mjFONTSCALE_100     = 100,      // normal scale, suitable in the absence of DPI scaling
+#     mjFONTSCALE_150     = 150,      // 150% scale
+#     mjFONTSCALE_200     = 200,      // 200% scale
+#     mjFONTSCALE_250     = 250,      // 250% scale
+#     mjFONTSCALE_300     = 300       // 300% scale
+# } mjtFontScale;
+
     # How is mjrContext related to an OpenGL context?
     # An OpenGL context is what enables the application to talk to the video driver and send rendering commands.
     # It must exist and must be current in the calling thread before mjr_makeContext is called.
@@ -74,7 +86,6 @@ if __name__ == "__main__":
 
     # more details here: https://mujoco.readthedocs.io/en/latest/programming.html#context-and-gpu-resources
 
-    
     magnitude = 2
 
     while not mj.glfw.glfw.window_should_close(window):
@@ -90,7 +101,9 @@ if __name__ == "__main__":
         if control_mode == "force_actuator":
             action = random.choice([magnitude,-magnitude])
             # can use named access
-            actuator_id = model.actuator('root').id
+            # actuator_id = model.actuator('root').id
+            actuator_id = model.actuator('elbow').id
+            
             data.ctrl[actuator_id] = action
 
         elif control_mode == "force_to_cloth":
@@ -135,12 +148,16 @@ if __name__ == "__main__":
         
         #mj.mjv_updateScene(model, data, opt, None, cam, 0, scene)
         
-        # update scene with newest data
+        # update scene with newest data/model state
+        # void mjv_updateScene(const mjModel* m, mjData* d, const mjvOption* opt,
+                    #  const mjvPerturb* pert, mjvCamera* cam, int catmask, mjvScene* scn);
+                    
         mj.mjv_updateScene(model, data, opt, None, cam, mj.mjtCatBit.mjCAT_ALL.value, scene)
         
         # render the scene
         mj.mjr_render(viewport, scene, context)
-
+        
+        # standard procedure for OpenGL
         # swap OpenGL buffers (blocking call due to v-sync)
         mj.glfw.glfw.swap_buffers(window)
         # process pending GUI events, call GLFW callbacks
